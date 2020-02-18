@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="UTF-8">
+  <title> Weather App </title>
+  <link rel="stylesheet" href="stylesheet.css" type="text/css">
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+ </head>
+ 
+ <body>
+ 
+<center> 
+<h3 class="title center" style="font-size:300%;">Weather App</h3>
+<div class="form-group">
+<input type="text" name="city" id="city" class="form-control" >
+<button id="submitweather" class="btn btn-primary">Search city</button>
+</div>
+</center>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+$("#submitweather").click(function(){
+var city = $("#city").val();
+if(city!=''){
+$.ajax({
+url:'http://api.openweathermap.org/data/2.5/weather?q='+city+'&appid=98d46ba8691414e03eeb2224dd084c7a&units=metric',
+type:"GET",
+dataType:"jsonp",
+success:function(data){
+var wiget=show(data);
+$("#show").html(wiget);
+$("#show").val('');
+}
+
+});
+}
+else
+{
+$("#error").html('<div class="alert alert-danger alert-dismissable" id="errorcity"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Field cannot be empty!!</div>');
+}
+});
+
+});
+function show(data){
+
+return "<div class='alert alert-success alert-dismissable'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>"+
+"<h3 style='font-size:35px;font-weight:bold;'>Current Weather for "+data.name+", "+data.sys.country +"</h3>"+
+"<h3><strong>Weather</strong>: <img src='http://openweathermap.org/img/w/"+data.weather[0].icon+".png'> "+data.weather[0].main+"</h3>"+
+"<h3><strong>Description</strong>: "+data.weather[0].description+"</h3>"+
+"<h3><strong>Temprature</strong>: "+data.main.temp+"&deg;C</h3>"+
+"<h3><strong>Pressure</strong>: "+data.main.pressure+"hPa</h3>"+
+"<h3><strong>Humidity</strong>: "+data.main.humidity+"%</h3>"+
+"<h3><strong>Wind Speed</strong>: "+data.wind.speed+"m/sec</h3>"+
+"<h3><strong>Wind Direction</strong>: "+data.wind.deg+"&deg;</h3></div>"
+//map api AIzaSyC-FHpkFWtbzM4eAnl5JkQIdUbTdIctGIg
+}
+  
+</script>
+  
+ </body>
+ 
+</html>
